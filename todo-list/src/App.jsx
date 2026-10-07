@@ -17,16 +17,57 @@ function TodoList() {
       />
 
       <button onClick={() => {
+
         if(input.trim() !== "") {
-          setTodos([...todos, input.trim()]); 
+          setTodos([...todos, {
+            id: Date.now(),
+            text: input.trim(),
+            completed: false
+          }]); 
         }
+
         setInput("")
-      }}>Add</button>
+
+        }}>
+
+        Add
+      </button>
+
+      {todos.length === 0 ? <p>No todos yet. Add one!</p> : <p>You have {todos.length} {todos.length === 1 ? "todo" : "todos"}</p>}
 
       {todos.map((todo) => (
-        <p key={todo}>{todo} <button onClick={() => {const newTodos = todos.filter((item) => item !== todo);
-          setTodos(newTodos)}}>Delete</button></p>
-      ))}
+        <p key={todo.id}>
+
+          <button onClick={() => {
+            const newTodos = todos.map((item) => {
+              if(item.id === todo.id) {
+                return {
+                  ...item,
+                  completed: !item.completed
+                }
+              }
+
+              return item;
+            })
+
+            setTodos(newTodos);
+            }}>
+
+            {todo.completed ? "Undo" : "Complete"}
+          </button>
+
+          {todo.text} -{'>'} {todo.completed ? "Completed" : "Not Completed"}
+
+          <button 
+            onClick={() => {const newTodos = todos.filter((item) => item.id !== todo.id);
+
+            setTodos(newTodos)}}>
+
+            Delete
+          </button>
+
+        </p>
+      ))} 
 
     </>
   )
