@@ -9,12 +9,24 @@ function TodoList() {
     return savedTodos ? JSON.parse(savedTodos) : [];
   });
 
+  const [filter, setFilter] = useState("all");
+
+  let filteredTodos = todos;
+
+  if (filter === "active") {
+    filteredTodos = todos.filter((todo) => !todo.completed)
+  }
+  else if (filter === "completed") {
+    filteredTodos = todos.filter((todo) => todo.completed)
+  }
+
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos])
 
   return (
     <>
+
       <h1>Todo List</h1>
 
       <input 
@@ -43,7 +55,20 @@ function TodoList() {
 
       {todos.length === 0 ? <p>No todos yet. Add one!</p> : <p>You have {todos.length} {todos.length === 1 ? "todo" : "todos"}</p>}
 
-      {todos.map((todo) => (
+      <div>
+        <button onClick={() => setFilter("all")}>
+          All
+        </button>
+        <button onClick={() => setFilter("active")}>
+          Active
+        </button>
+        <button onClick={() => setFilter("completed")}>
+          Completed
+        </button>
+
+      </div>
+
+      {filteredTodos.map((todo) => (
         <p key={todo.id}>
 
           <button onClick={() => {
