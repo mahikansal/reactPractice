@@ -102,6 +102,14 @@ function TodoList() {
         </p>
       ))} 
 
+      <button onClick={() => {
+        const remainingTodos = todos.filter((item) => !item.completed)
+
+        setTodos(remainingTodos)
+        }}>
+        Delete Complete Task
+      </button>
+
     </>
   )
 }
